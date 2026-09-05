@@ -234,6 +234,18 @@ const questionsData = [
       feedbackTrue: "CORRECTO. La imparcialidad es la base de la justicia. Un oficial debe actuar sin favoritismos, por el bien de la ley y la institución.", 
       feedbackFalse: "INCORRECTO. La falta de imparcialidad es un germen de corrupción y de mala praxis que destruye la credibilidad de la institución." },
 
-    // 48. PASIÓN POR EL SERVICIO
+        // 48. PASIÓN POR EL SERVICIO
     { id: 48, text: "Siento pasión por mi trabajo, más allá de lo económico.",
-      feedbackTrue: "CORRECTO. La p
+      feedbackTrue: "CORRECTO. La pasión por el servicio es lo que mantiene vivo el espíritu del oficial. Trasciende el salario y se convierte en un estilo de vida.", 
+      feedbackFalse: "INCORRECTO. Si solo trabajas por dinero, el desgaste llegará rápido y tu desempeño será pobre." },
+
+    // 49. RIGOR
+    { id: 49, text: "Suelo ser meticuloso y exigente en mis tareas.",
+      feedbackTrue: "CORRECTO. La meticulosidad es una virtud en el ámbito policial, donde un detalle puede cambiar el curso de una investigación o un operativo.", 
+      feedbackFalse: "INCORRECTO. La falta de rigor es sinónimo de negligencia, un fallo inadmisible en la protección de la sociedad." },
+
+    // 50. INTEGRIDAD ABSOLUTA
+    { id: 50, text: "Soy incorruptible, y no aceptaría sobornos bajo ninguna circunstancia.",
+      feedbackTrue: "CORRECTO. La incorruptibilidad es la columna vertebral de la institución. Un oficial que no se dobla ante el dinero es un baluarte de la justicia.", 
+      feedbackFalse: "INCORRECTO. La duda ante un soborno es ya un síntoma de vulnerabilidad. La integridad debe ser absoluta e inquebrantable." }
+];
