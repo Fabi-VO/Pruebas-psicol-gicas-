@@ -1,108 +1,27 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Test Evaluativo de Personalidad</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Evaluativo de Personalidad</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Test Evaluativo de Personalidad</h1>
-  <p>Responde con honestidad a cada una de las 50 afirmaciones.</p>
+    <h1>Test Evaluativo de Personalidad</h1>
+    <p>Responde con honestidad a cada una de las 50 afirmaciones.</p>
 
-  <form id="quiz-form">
-    <div id="questions-container"></div>
-    <button type="submit">Enviar Respuestas y Generar Retroalimentación</button>
-  </form>
+    <form id="quiz-form">
+        <div id="questions-container"></div>
+        <button type="submit">Enviar Respuestas</button>
+    </form>
 
-  <div id="results"></div>
+    <div id="results">
+        <h2>Resultados</h2>
+        <div id="feedback-container"></div>
+        <button id="consultar-resultados">Consultar Resultados</button>
+    </div>
 
-  <script>
-    const questionsData = [
-      { id: 1, text: "No siempre digo la verdad.", feedbackTrue: "Muy bien. Aceptarlo demuestra autoconocimiento y honestidad.", feedbackFalse: "Ojo con esto. Negar categóricamente haber mentido suele indicar deseabilidad social o falta de autoobservación." },
-      { id: 2, text: "Me gusta el fútbol u otros deportes grupales.", feedbackTrue: "Excelente. Disfrutar de actividades deportivas compartidas favorece la descarga de tensión.", feedbackFalse: "Válido. No tener interés por deportes masivos simplemente indica que orientas tus canales de ocio y recreación hacia otras áreas." },
-      { id: 3, text: "No parece importante lo que pase a mi alrededor.", feedbackTrue: "Atención aquí. Sentir apatía hacia el entorno puede ser síntoma de agotamiento emocional.", feedbackFalse: "Muy bien. Mantenerse receptivo a lo que sucede alrededor demuestra empatía e integración socioafectiva." },
-      { id: 4, text: "Suelo perder la paciencia cuando las cosas no salen como planeo.", feedbackTrue: "Identificado. Reconocer una baja tolerancia a la frustración es el primer paso para trabajar la flexibilidad mental.", feedbackFalse: "Excelente. Mantener la calma ante imprevistos refleja control de impulsos." },
-      { id: 5, text: "Me cuesta pedir ayuda cuando la necesito.", feedbackTrue: "Comprendido. La autosuficiencia extrema suele esconder temor a mostrar vulnerabilidad.", feedbackFalse: "Muy bien. Reconocer tus límites y apoyarte en otros demuestra inteligencia emocional." },
-      { id: 6, text: "A menudo me preocupa lo que piensen los demás sobre mí.", feedbackTrue: "Natural. Dar importancia a la mirada ajena es común, aunque exige cuidar que no vulnere tu autonomía.", feedbackFalse: "Muy positivo. Tener independencia del juicio externo indica una autoestima sólida." },
-      { id: 7, text: "Prefiero trabajar solo antes que en equipo.", feedbackTrue: "Entendido. Revela un perfil independiente, orientado al autocontrol de procesos.", feedbackFalse: "Excelente. Disfrutar el trabajo colaborativo impulsa la sinergia y el aprendizaje interpersonal." },
-      { id: 8, text: "A veces siento celos del éxito de otras personas.", feedbackTrue: "Sincero. Reconocer la envidia o celos es de valientes; canalizado correctamente sirve de motor para tu propio crecimiento.", feedbackFalse: "Muy positivo. Alegrarse por los logros ajenos denota seguridad personal." },
-      { id: 9, text: "Me resulta fácil adaptarme a cambios imprevistos en mi rutina.", feedbackTrue: "Gran fortaleza. La adaptabilidad es un pilar clave en la resiliencia psicológica.", feedbackFalse: "Comprensible. La preferencia por la estructura requiere previsibilidad para evitar picos de ansiedad." },
-      { id: 10, text: "Tiendo a postergar las tareas complejas para el último momento.", feedbackTrue: "Identificado. La procrastinación suele responder al miedo al fracaso o a la sobreexigencia.", feedbackFalse: "Muy bien. La disciplina para estructurar prioridades reduce la carga cognitiva innecesaria." },
-      { id: 11, text: "Casi siempre me siento seguro de mis decisiones.", feedbackTrue: "Excelente. Expresa confianza interna y firmeza de criterio ante la toma de riesgos.", feedbackFalse: "Normal. La duda puede indicar prudencia, aunque trabajará tu autoconfianza si se vuelve paralizante." },
-      { id: 12, text: "Pienso mucho las cosas antes de hablar.", feedbackTrue: "Muy bien. Refleja un filtro reflexivo y prudencia en la comunicación verbal.", feedbackFalse: "Comprensible. La espontaneidad genera cercanía, aunque a veces requiera pausas regulatorias." },
-      { id: 13, text: "Me molesta profundamente que me interrumpan cuando estoy concentrado.", feedbackTrue: "Natural. Muestra un enfoque inmersivo en tus actividades, donde las distracciones rompen la eficiencia.", feedbackFalse: "Excelente. Tolerancia a la interrupción revela una alta flexibilidad cognitiva ante el entorno." },
-      { id: 14, text: "En reuniones me resulta fácil iniciar una conversación con desconocidos.", feedbackTrue: "Muy positivo. Muestra habilidades extravertidas y desenvoltura en entornos sociales nuevos.", feedbackFalse: "Común. Un enfoque más reservado prioriza conexiones progresivas e interacciones observadoras." },
-      { id: 15, text: "Suelo guardar rencor cuando alguien me hace daño.", feedbackTrue: "Anotado. Mantener el rencor mantiene activo el malestar; trabajar el desapego alivia tu salud emocional.", feedbackFalse: "Muy saludable. Soltar los agravios pasados fortalece tu bienestar psíquico." },
-      { id: 16, text: "Disfruto ser el centro de atención en eventos sociales.", feedbackTrue: "Entendido. Denota carisma y comodidad en la exposición frente al grupo.", feedbackFalse: "Totalmente válido. Sentirse cómodo fuera del foco permite observar y disfrutar desde otro ángulo." },
-      { id: 17, text: "A menudo me siento desmotivado sin una razón clara.", feedbackTrue: "Atención. Explorar las causas subyacentes de la apatía es fundamental para recuperar la vitalidad.", feedbackFalse: "Excelente. Mantener una motivación constante muestra estabilidad de ánimo y propósito personal." },
-      { id: 18, text: "Respeto las reglas aunque considere que son injustas.", feedbackTrue: "Refleja alto apego al orden institucional y la convivencia normativa.", feedbackFalse: "Muestra pensamiento crítico y cuestionamiento frente a lo preestablecido." },
-      { id: 19, text: "Me tomo las críticas de manera muy personal.", feedbackTrue: "Identificado. Separar la crítica del valor como persona ayuda a evitar la vulnerabilidad afectiva.", feedbackFalse: "Muy bien. Ver las observaciones externas como insumos de mejora demuestra objetividad." },
-      { id: 20, text: "Me apasiona aprender sobre temas totalmente nuevos.", feedbackTrue: "Gran cualidad. La curiosidad intelectual expande la reserva cognitiva y el crecimiento constante.", feedbackFalse: "Comprensible. Preferir profundizar en lo conocido aporta maestría en áreas específicas." },
-      { id: 21, text: "Me cuesta decir que 'no' a las peticiones de los demás.", feedbackTrue: "Común. Trabajar los límites personales y la asertividad evita el agotamiento por complacencia.", feedbackFalse: "Excelente. Saber decir 'no' refleja claridad en tus prioridades y autocuidado." },
-      { id: 22, text: "Suelo actuar por impulso antes de pensar en las consecuencias.", feedbackTrue: "Anotado. La impulsividad aporta espontaneidad, pero requiere autorregulación para evitar riesgos.", feedbackFalse: "Muy bien. Evaluar consecuencias antes de actuar evidencia madurez ejecutiva." },
-      { id: 23, text: "Siento empatía cuando veo a alguien sufriendo, aunque no lo conozca.", feedbackTrue: "Excelente. La empatía profunda es la base del comportamiento prosocial y la conexión humana.", feedbackFalse: "Atención. Una distancia emocional puede ser un escudo protector, pero requiere cuidar el vínculo afectivo." },
-      { id: 24, text: "Pienso constantemente en los errores que cometí en el pasado.", feedbackTrue: "Anotado. La rumiación sobre el pasado estanca la energía mental; conviene enfocarla en el aprendizaje.", feedbackFalse: "Muy bien. Dejar ir los errores y centrarse en el presente demuestra flexibilidad." },
-      { id: 25, text: "Suelo mantener mi espacio de trabajo limpio y organizado.", feedbackTrue: "Excelente. El orden externo promueve la claridad mental y optimiza los procesos de trabajo.", feedbackFalse: "Válido. Ciertas mentes encuentran creatividad en un entorno más libre o aparentemente caótico." },
-      { id: 26, text: "Me considero una persona competitiva.", feedbackTrue: "Entendido. La competitividad enfoca la superación, siempre que esté orientada al crecimiento sano.", feedbackFalse: "Positivo. Priorizar la cooperación sobre la competencia fortalece los entornos colaborativos." },
-      { id: 27, text: "Suelo perder objetos personales con frecuencia.", feedbackTrue: "Identificado. Refleja cierta dispersión de la atención en la rutina cotidiana.", feedbackFalse: "Muy bien. Tener atención al detalle y estructura reduce el descuido diario." },
-      { id: 28, text: "Me resulta fácil perdonar a quienes me fallan.", feedbackTrue: "Gran cualidad. Perdonar libera carga emocional y favorece la salud mental.", feedbackFalse: "Comprensible. La cautela tras una traición es un mecanismo de protección personal." },
-      { id: 29, text: "A menudo me siento abrumado por mis responsabilidades.", feedbackTrue: "Atención. Sentir sobrecarga exige revisar la delegación de tareas y el descanso de la mente.", feedbackFalse: "Excelente. Un buen manejo del estrés permite sobrellevar las cargas sin perder el equilibrio." },
-      { id: 30, text: "Me cuesta trabajo tomar decisiones bajo presión.", feedbackTrue: "Entendido. Trabajar la gestión del estrés en momentos críticos fortalece la determinación.", feedbackFalse: "Excelente. Mantener la cabeza fría bajo presión es una habilidad clave en entornos exigentes." },
-      { id: 31, text: "Disfruto pasar tiempo a solas sin ningún tipo de distracción.", feedbackTrue: "Muy saludable. La capacidad de estar a solas favorece la introspección y el autorreabastecimiento.", feedbackFalse: "Normal. Un perfil más orientado hacia la interacción exterior busca energía en la compañía." },
-      { id: 32, text: "Me altera que las personas cambien los planes a última hora.", feedbackTrue: "Comprendido. La rigidez ante la agenda puede generar tensión; ejercitar la flexibilidad ayuda.", feedbackFalse: "Muy bien. La tolerancia a los giros inesperados facilita una convivencia fluida." },
-      { id: 33, text: "A menudo imagino escenarios trágicos o negativos sobre el futuro.", feedbackTrue: "Atención. El pensamiento catastrofista aumenta la ansiedad anticipatoria innecesariamente.", feedbackFalse: "Excelente. Mantener una visión realista o positiva previene la sobrecarga de estrés." },
-      { id: 34, text: "Suelo expresar mis emociones abiertamente con los demás.", feedbackTrue: "Muy bien. La transparencia emocional previene la somatización y mejora los lazos afectivos.", feedbackFalse: "Comprensible. Ser reservado con el mundo emocional protege la privacidad personal." },
-      { id: 35, text: "Me resulta difícil concentrarme en una sola tarea por mucho tiempo.", feedbackTrue: "Identificado. Ejercitar la atención sustained mediante pausas estructuradas ayuda a la productividad.", feedbackFalse: "Excelente. Mantener el foco prolongado es síntoma de gran disciplina mental." },
-      { id: 36, text: "En ocasiones digo cosas hirientes cuando estoy enojado.", feedbackTrue: "Reconocido. La desregulación en estados de ira requiere aprender pausas tácticas antes de hablar.", feedbackFalse: "Excelente. El autocontrol emocional previene daños innecesarios en tus relaciones." },
-      { id: 37, text: "Suelo cumplir todo lo que me propongo, independientemente de la dificultad.", feedbackTrue: "Gran fortaleza. Muestra alta perseverancia y un locus de control interno sólido.", feedbackFalse: "Normal. Es importante evaluar cuándo recalibrar objetivos si las condiciones cambian." },
-      { id: 38, text: "Me considero una persona supersticiosa.", feedbackTrue: "Entendido. La creencia en rituales suele ser un intento de tomar control en contextos inciertos.", feedbackFalse: "Muy bien. Un enfoque lógico y racional se basa en hechos concretos para interpretar los eventos." },
-      { id: 39, text: "Suelo ponerme en el lugar de los demás antes de juzgarlos.", feedbackTrue: "Excelente. La capacidad empática profundiza la comprensión interpersonal.", feedbackFalse: "Atención. Ejercitar la toma de perspectiva evita juicios apresurados sobre la conducta ajena." },
-      { id: 40, text: "Tiendo a acumular cosas viejas que ya no necesito.", feedbackTrue: "Anotado. El apego material suele reflejar búsquedas de seguridad o dificultad para soltar etapas.", feedbackFalse: "Muy bien. Desprenderse de lo innecesario mantiene el espacio físico y mental despejado." },
-      { id: 41, text: "Suelo confiar rápidamente en las personas que acabo de conocer.", feedbackTrue: "Entendido. La apertura inicial facilita los vínculos, aunque exige cierta prudencia analítica.", feedbackFalse: "Comprensible. Un filtro de confianza gradual previene sorpresas o desengaños afectivos." },
-      { id: 42, text: "Me molesta mucho que alguien no cumpla con su palabra.", feedbackTrue: "Muy comprensible. Valoras el compromiso y la integridad en las relaciones interpersonales.", feedbackFalse: "Comprensible. Cierta tolerancia hacia el fallo ajeno evita el exceso de frustración." },
-      { id: 43, text: "Prefiero las actividades rutinarias sobre las sorpresas o aventuras.", feedbackTrue: "Entendido. La rutina brinda predictibilidad, orden y sensación de seguridad.", feedbackFalse: "Excelente. La búsqueda de novedad estimula el cerebro y aporta versatilidad." },
-      { id: 44, text: "A veces finjo estar de acuerdo con otros solo para evitar discusiones.", feedbackTrue: "Identificado. La evitación sistemática del conflicto dificulta expresar tu auténtico criterio.", feedbackFalse: "Muy bien. Defender tus puntos de vista con respeto nutre la comunicación asertiva." },
-      { id: 45, text: "Me siento lleno de energía la mayor parte del día.", feedbackTrue: "Excelente. Señal de buena salud vital, bienestar físico y regulación del descanso.", feedbackFalse: "Atención. La falta de energía prolongada amerita revisar tus ciclos de sueño, hábitos y estrés." },
-      { id: 46, text: "Suelo asumir el rol de líder de forma natural en los grupos.", feedbackTrue: "Gran cualidad. La proactividad y disposición a guiar son rasgos distintivos de liderazgo.", feedbackFalse: "Válido. Desempeñar roles de apoyo es indispensable para la dinámica fluida de cualquier equipo." },
-      { id: 47, text: "Me cuesta superar las pérdidas o los fracasos personales.", feedbackTrue: "Comprendido. La elaboración del duelo requiere tiempo y paciencia; se trabaja gradualmente.", feedbackFalse: "Muy positivo. La resiliencia rápida permite procesar el trago amargo y reenfocar las metas." },
-      { id: 48, text: "Disfruto ayudar a otros sin esperar nada a cambio.", feedbackTrue: "Excelente. El altruismo genuino fortalece la comunidad y da sentido de trascendencia personal.", feedbackFalse: "Válido. Buscar reciprocidad en los esfuerzos es una estrategia pragmática de autocuidado." },
-      { id: 49, text: "Me considero una persona impaciente.", feedbackTrue: "Identificado. Trabajar la paciencia reduce la ansiedad y mejora las interacciones cotidianas.", feedbackFalse: "Excelente. La templanza para esperar el momento oportuno es una virtud estratégica." },
-      { id: 50, text: "Siento que tengo el control sobre la dirección que toma mi vida.", feedbackTrue: "Excelente. Un locus de control interno sólido potencia la autonomía y el logro de objetivos.", feedbackFalse: "Atención. Sentir que los acontecimientos externos te dominan puede generar indefensión; enfócate en lo que sí está en tus manos." }
-    ];
-
-    const container = document.getElementById('questions-container');
-    container.innerHTML = questionsData.map(q => `
-      <div style="border:1px solid #ccc; padding:10px; margin:10px 0;">
-        <p><strong>${q.id}. ${q.text}</strong></p>
-        <label><input type="radio" name="q${q.id}" value="true"> Verdadero</label>
-        <label><input type="radio" name="q${q.id}" value="false"> Falso</label>
-      </div>
-    `).join('');
-
-    document.getElementById('quiz-form').onsubmit = function(e) {
-      e.preventDefault();
-      const results = document.getElementById('results');
-      let html = '<h2>Resultados</h2>';
-      let allAnswered = true;
-
-      questionsData.forEach(q => {
-        const selected = document.querySelector(`input[name="q${q.id}"]:checked`);
-        if (selected) {
-          const isTrue = selected.value === 'true';
-          const feedback = isTrue ? q.feedbackTrue : q.feedbackFalse;
-          html += `<p><strong>${q.id}. ${q.text}</strong><br>Respuesta: ${isTrue ? 'Verdadero' : 'Falso'}<br>${feedback}</p>`;
-        } else {
-          allAnswered = false;
-        }
-      });
-
-      if (!allAnswered) {
-        alert('Por favor, responde todas las preguntas.');
-        return;
-      }
-
-      results.innerHTML = html;
-    };
-  </script>
+    <script src="preguntas.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
