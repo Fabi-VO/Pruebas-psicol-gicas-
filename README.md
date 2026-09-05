@@ -1,1 +1,0 @@
-# Pruebas-psicol-gicas-
