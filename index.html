@@ -211,6 +211,7 @@
       quizForm.addEventListener('submit', function(e) {
         e.preventDefault();
         feedbackContainer.innerHTML = '';
+        let hasError = false;
 
         questionsData.forEach((q) => {
           const selectedInput = document.querySelector(`input[name="q${q.id}"]:checked`);
@@ -222,4 +223,4 @@
             card.className = 'feedback-card';
             card.innerHTML = `
               <strong>Pregunta ${q.id}: ${q.text}</strong>
-              <div class="user-select">Respondiste: <em>${isTrue ? 'Verdadero' : 'Fals
+              <div class="user-select">Respondiste: <em>
