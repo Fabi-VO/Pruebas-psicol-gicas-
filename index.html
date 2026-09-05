@@ -2,8 +2,8 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Test de Personalidad y Psicología</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test Evaluativo de Personalidad</title>
   <style>
     :root {
       --bg: #0f172a;
@@ -19,7 +19,7 @@
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       background-color: var(--bg);
       color: var(--text);
       max-width: 800px;
@@ -72,18 +72,10 @@
       cursor: pointer;
       font-weight: bold;
       font-size: 0.95rem;
-      border: 2px solid transparent;
-      transition: all 0.2s ease;
     }
 
     .option-btn input[type="radio"] {
-      display: none;
-    }
-
-    .option-btn:has(input:checked) {
-      background-color: rgba(56, 189, 248, 0.2);
-      border-color: var(--accent);
-      color: var(--accent);
+      margin-right: 8px;
     }
 
     button[type="submit"] {
@@ -128,15 +120,15 @@
 <body>
 
   <h1>Test Evaluativo de Personalidad</h1>
-  <p class="intro-text">Responde las 50 preguntas para obtener tu análisis inmediato.</p>
+  <p class="intro-text">Responde con honestidad a cada una de las 50 afirmaciones para generar tu análisis detallado al final.</p>
   
   <form id="quiz-form">
     <div id="questions-container"></div>
-    <button type="submit">Enviar Respuestas y Generar Resultados</button>
+    <button type="submit">Enviar Respuestas y Generar Retroalimentación</button>
   </form>
 
   <div id="results">
-    <h2>Análisis y Retroalimentación</h2>
+    <h2>Análisis Psicológico y Retroalimentación</h2>
     <div id="feedback-container"></div>
   </div>
 
@@ -176,7 +168,7 @@
       { id: 32, text: "Me altera que las personas cambien los planes a última hora.", feedbackTrue: "Comprendido. La rigidez ante la agenda puede generar tensión; ejercitar la flexibilidad ayuda.", feedbackFalse: "Muy bien. La tolerancia a los giros inesperados facilita una convivencia fluida." },
       { id: 33, text: "A menudo imagino escenarios trágicos o negativos sobre el futuro.", feedbackTrue: "Atención. El pensamiento catastrofista aumenta la ansiedad anticipatoria innecesariamente.", feedbackFalse: "Excelente. Mantener una visión realista o positiva previene la sobrecarga de estrés." },
       { id: 34, text: "Suelo expresar mis emociones abiertamente con los demás.", feedbackTrue: "Muy bien. La transparencia emocional previene la somatización y mejora los lazos afectivos.", feedbackFalse: "Comprensible. Ser reservado con el mundo emocional protege la privacidad personal." },
-      { id: 35, text: "Me resulta difícil concentrarme en una sola tarea por mucho tiempo.", feedbackTrue: "Identificado. Ejercitar la atención sostenida mediante pausas estructuradas ayuda a la productividad.", feedbackFalse: "Excelente. Mantener el foco prolongado es síntoma de gran disciplina mental." },
+      { id: 35, text: "Me resulta difícil concentrarme en una sola tarea por mucho tiempo.", feedbackTrue: "Identificado. Ejercitar la atención sustained mediante pausas estructuradas ayuda a la productividad.", feedbackFalse: "Excelente. Mantener el foco prolongado es síntoma de gran disciplina mental." },
       { id: 36, text: "En ocasiones digo cosas hirientes cuando estoy enojado.", feedbackTrue: "Reconocido. La desregulación en estados de ira requiere aprender pausas tácticas antes de hablar.", feedbackFalse: "Excelente. El autocontrol emocional previene daños innecesarios en tus relaciones." },
       { id: 37, text: "Suelo cumplir todo lo que me propongo, independientemente de la dificultad.", feedbackTrue: "Gran fortaleza. Muestra alta perseverancia y un locus de control interno sólido.", feedbackFalse: "Normal. Es importante evaluar cuándo recalibrar objetivos si las condiciones cambian." },
       { id: 38, text: "Me considero una persona supersticiosa.", feedbackTrue: "Entendido. La creencia en rituales suele ser un intento de tomar control en contextos inciertos.", feedbackFalse: "Muy bien. Un enfoque lógico y racional se basa en hechos concretos para interpretar los eventos." },
@@ -194,12 +186,13 @@
       { id: 50, text: "Siento que tengo el control sobre la dirección que toma mi vida.", feedbackTrue: "Excelente. Un locus de control interno sólido potencia la autonomía y el logro de objetivos.", feedbackFalse: "Atención. Sentir que los acontecimientos externos te dominan puede generar indefensión; enfócate en lo que sí está en tus manos." }
     ];
 
-    const questionsContainer = document.getElementById('questions-container');
-    const quizForm = document.getElementById('quiz-form');
-    const resultsDiv = document.getElementById('results');
-    const feedbackContainer = document.getElementById('feedback-container');
+    document.addEventListener("DOMContentLoaded", function() {
+      const questionsContainer = document.getElementById('questions-container');
+      const quizForm = document.getElementById('quiz-form');
+      const resultsDiv = document.getElementById('results');
+      const feedbackContainer = document.getElementById('feedback-container');
 
-    function renderQuestions() {
+      // Generar dinámicamente las 50 preguntas
       questionsContainer.innerHTML = questionsData.map((q) => `
         <div class="question-card">
           <div class="question-text">${q.id}. ${q.text}</div>
@@ -213,19 +206,20 @@
           </div>
         </div>
       `).join('');
-    }
 
-    quizForm.addEventListener('submit', function(e) {
-      e.preventDefault();
-      feedbackContainer.innerHTML = '';
+      // Procesar el envío
+      quizForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        feedbackContainer.innerHTML = '';
 
-      questionsData.forEach((q) => {
-        const selectedOption = document.querySelector(`input[name="q${q.id}"]:checked`).value;
-        const isTrue = selectedOption === 'true';
-        const feedbackText = isTrue ? q.feedbackTrue : q.feedbackFalse;
+        questionsData.forEach((q) => {
+          const selectedInput = document.querySelector(`input[name="q${q.id}"]:checked`);
+          if (selectedInput) {
+            const isTrue = selectedInput.value === 'true';
+            const feedbackText = isTrue ? q.feedbackTrue : q.feedbackFalse;
 
-        const card = document.createElement('div');
-        card.className = 'feedback-card';
-        card.innerHTML = `
-          <strong>Pregunta ${q.id}: ${q.text}</strong>
-          <div class="user-select">Respondiste: 
+            const card = document.createElement('div');
+            card.className = 'feedback-card';
+            card.innerHTML = `
+              <strong>Pregunta ${q.id}: ${q.text}</strong>
+              <div class="user-select">Respondiste: <em>${isTrue ? 'Verdadero' : 'Fals
